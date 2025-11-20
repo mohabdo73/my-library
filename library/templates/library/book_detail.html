@@ -1,0 +1,44 @@
+{% extends "library/base.html" %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <!-- عرض صورة الغلاف -->
+            {% if book.cover_image %}
+            <img src="{{ book.cover_image.url }}" class="img-fluid rounded shadow-lg" alt="{{ book.title }}">
+            {% else %}
+            <div class="d-flex align-items-center justify-content-center bg-light rounded shadow-lg" style="height: 400px;">
+                <h4 class="text-muted">لا تتوفر صورة غلاف</h4>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="col-md-8">
+            <h1 class="display-4">{{ book.title }}</h1>
+            <p class="lead text-muted border-bottom pb-2 mb-4">المؤلف: **{{ book.author }}**</p>
+            
+            <div class="d-flex align-items-center mb-3">
+                <span class="badge bg-primary fs-6 me-3">{{ book.get_category_display }}</span>
+                <span class="badge bg-info text-dark fs-6">المخزون المتوفر: {{ book.stock_count }}</span>
+            </div>
+
+            <h2 class="text-success display-5 my-4">{{ book.price }} د.ع</h2>
+            
+            <h3 class="mt-5 border-bottom pb-2">الوصف</h3>
+            <p>{{ book.description|linebreaks }}</p>
+            
+            <div class="mt-5">
+                <!-- بداية كود الزر الفعال -->
+<form action="{% url 'library:add_to_cart' book.id %}" method="POST" class="d-inline">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success btn-lg me-3">أضف إلى السلة</button>
+</form>
+<!-- نهاية كود الزر الفعال -->
+                <a href="{% url 'library:book_list' %}" class="btn btn-outline-secondary btn-lg">العودة لقائمة الكتب</a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

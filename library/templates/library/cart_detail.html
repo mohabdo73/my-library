@@ -1,0 +1,46 @@
+{% extends 'library/base.html' %}
+
+{% block title %}سلة التسوق{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">سلة التسوق</h1>
+
+{% if cart_items %}
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>الكتاب</th>
+                <th>السعر</th>
+                <th>الكمية</th>
+                <th>المجموع</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.book.title }}</td>
+                <td>{{ item.book.price }} د.ع</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.total_price }} د.ع</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-start fw-bold">الإجمالي الكلي</td>
+                <td class="fw-bold text-success">{{ grand_total }} د.ع</td>
+            </tr>
+        </tfoot>
+    </table>
+    
+    <div class="mt-4">
+        <a href="#" class="btn btn-primary">إتمام الشراء</a>
+        <a href="{% url 'library:book_list' %}" class="btn btn-outline-secondary">متابعة التسوق</a>
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        سلتك فارغة حالياً. <a href="{% url 'library:book_list' %}">تصفح الكتب</a>
+    </div>
+{% endif %}
+
+{% endblock %}

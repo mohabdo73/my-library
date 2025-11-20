@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}مكتبتي الرقمية{% endblock %}</title>
+    
+    <!-- 1. Bootstrap CSS (تحميل محلي) -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.min.css' %}">
+
+    <!-- 2. ملف CSS المخصص -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    {% block extra_head %}{% endblock %}
+
+<style>
+    /* تنسيق الزر المخصص */
+    .btn-custom-login {
+        background-color: #ffffff; /* لون الخلفية أبيض */
+        color: #000000;            /* لون النص أسود */
+        border: 2px solid #ced4da; /* حدود رمادية خفيفة */
+        transition: all 0.3s ease; /* تأثير ناعم عند التغيير */
+    }
+
+    /* التنسيق عند تمرير الماوس */
+    .btn-custom-login:hover {
+        background-color: #0d6efd; /* يتغير للأزرق (لون البوتستراب الأساسي) */
+        color: #ffffff;            /* يتغير النص للأبيض */
+        border-color: #0d6efd;     /* حدود زرقاء */
+    }
+</style>
+
+
+</head>
+<body class="d-flex flex-column min-vh-100">
+    
+    <!-- شريط التنقل (Navbar) -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <div class="container">
+                <!-- العلامة التجارية - تم ربطها بالصفحة الرئيسية -->
+                <a class="navbar-brand" href="{% url 'library:home' %}">مكتبتي</a> 
+                
+                <!-- زر التبديل (لشاشات الهاتف) -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <!-- الروابط والقائمة -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    
+                    <!-- الروابط الأساسية -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <!-- تم التعديل: ربط بالصفحة الرئيسية -->
+                            <a class="nav-link {% if request.path == '/' %}active{% endif %}" aria-current="page" href="{% url 'library:home' %}">الرئيسية</a>
+                        </li>
+                        <li class="nav-item">
+                            <!-- تم التعديل: ربط بقائمة الكتب الجديدة -->
+                            <a class="nav-link {% if request.path|slice:'6:' == 'books/' %}active{% endif %}" href="{% url 'library:book_list' %}">الكتب</a>
+                        </li>
+                        <li class="nav-item">
+                            <!-- تم التعديل: ربط بصفحة سلة التسوق (سنضيف رابطها لاحقاً، حالياً #) -->
+                            <a class="nav-link" href="{% url 'library:cart_detail' %}">سلة التسوق</a>
+                        </li>
+                    </ul>
+
+                    <!-- زر تسجيل الدخول (يبقى مؤقتاً كـ #) -->
+                    <ul class="navbar-nav ms-auto">
+                     <li class="nav-item">
+    <!-- تم إضافة الكلاس btn-custom-login -->
+    <a class="btn btn-sm btn-custom-login ms-3 fw-bold" href="#">تسجيل الدخول</a>
+</li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- منطقة المحتوى الرئيسية -->
+    <main class="flex-shrink-0">
+        <div class="container mt-5 pt-3"> 
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    
+    <!-- تذييل الصفحة (Footer) -->
+    <footer class="footer mt-auto py-3 bg-dark">
+      <div class="container text-center">
+        <span class="text-white">جميع الحقوق محفوظة &copy; مكتبتي {% now "Y" %}</span>
+      </div>
+    </footer>
+
+    <!-- 3. Bootstrap JS Bundle (تحميل محلي) -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
